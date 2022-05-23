@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>[[${pageTitle}]]</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.1.1/css/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/resources/static/style.css}">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="text-center"><h2>[[${pageTitle}]]</h2></div>
+
+
+    <form class="container-fluid text-center" th:action="@{/course/save}" method="post" th:object="${course}"
+          style="max-width: 700px; margin: 0 auto;">
+        <input type="hidden" th:field="*{id}">
+        <div class="border border-secondary rounded p-3">
+
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Name</label>
+                <div class="col-sm-6">
+                    <input type="text" th:field="*{name}" class="form-control"/>
+                </div>
+
+                <label class="col-sm-4 col-form-label">Price</label>
+                <div class="col-sm-6">
+                    <input type="number" th:field="*{price}" class="form-control"/>
+                </div>
+
+                <label class="col-sm-4 col-form-label">Vegetarian</label>
+
+                <div class="form-check">
+                    <input th:type="checkbox" vertical-align="middle" name="vegetarian" th:checked="${vegetarian}" class="form-check-input"/>
+                </div>
+
+                <label class="col-sm-4 col-form-label">Choose ingredients:</label>
+
+                <div class="form-check">
+                    <th:block th:each="ingredient : ${ingredientsList}" >
+
+                        <div>
+                            <input th:type="checkbox" th:field="*{ingredients}" th:text="${ingredient.name}"
+                                   th:value="${ingredient.id}"/>
+
+                        </div>
+
+                    </th:block>
+                </div>
+
+                <div class="col-sm-12" >
+                    <button class="btn btn-primary m2 btn-dark rounded"  type="submit">Submit</button>
+                    <button type="button" class="btn btn-secondary btn-danger" onclick="cancelForm()">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <br/>
+    <form th:action="@{/course/save/ingredient}" method="post" th:object="${ingredient}" style="max-width: 500px; margin: 0 auto">
+        <h5>Add New Ingredient</h5>
+        <div class="border border-secondary p-4 rounded">
+            <input type="hidden" th:field="${ingredient.id}"/>
+            <div class="mb-3">
+                <label class="h5" style="font-weight: bold">Name</label>
+                <input required th:field="${ingredient.name}"/>
+            </div>
+            <div>
+                <button class="btn btn-primary mb-1" type="submit">Save</button>
+            </div>
+        </div>
+
+
+    </form>
+
+</div>
+<script type="application/javascript">
+    function cancelForm(){
+        window.location="/course";
+    }
+</script>
+
+</body>
+</html>
